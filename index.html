@@ -3,14 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
 </head>
 <body>
 
   <div id="app">
 
+      <div class="container-fluid">
+
+          <!--  Header with input   -->
+          <div class="px-4 py-5 my-10 text-center">
+              <h1 class="display-5 fw-bold">
+                  <i class="fa fa-thermometer" style="font-size: 48px"></i>
+                  WeatherBuddy
+              </h1>
+              <div class="col-lg-6 mx-auto">
+                  <div class="d-grid mt-5 d-sm-flex justify-content-sm-center">
+                      <input
+                          type="text"
+                          class="form-control mx-10"
+                          placeholder="Please input city name"
+                          autofocus
+                          v-model="searchCity"
+                      >
+                      <button
+                          type="button"
+                          class="btn btn-success btn-lg px-4"
+                          :disabled="this.stopAdding"
+                          @click="findWeather"
+                      >Search</button>
+                  </div>
+                  <div v-if="stopAdding" class="alert alert-warning mt-3" role="alert">
+                      We can show max 3 cities !
+                  </div>
+              </div>
+          </div>
+
+          <!-- cards wrapper, 3 cards max -->
+          <div class="container px-4 py-5">
+              <h2 class="pb-2 border-bottom">Weather in towns:</h2>
+              <div  class="row g-4 py-5 row-cols-3">
+
+                  <!-- Single city card -->
+                  <div v-for="city in cities" class="row align-items-center mr-1">
+                      <div class="card border">
+                          <div class="card-body p-4">
+
+                              <h4 class="mb-2">{{ city.name }}, {{ city.country }}</h4>
+                              <p class="mb-2">Current temperature: <strong>{{ city.temp }}°C</strong></p>
+                              <p>Feels like: <strong>{{ city.feelsLike }}°C</strong></p>
+                              <p>Max: <strong>{{ city.tempMin }}°C</strong>, Min: <strong>{{ city.tempMax }}°C</strong></p>
+                              <p>Wind: <strong>{{ city.wind }}</strong></p>
+                              <p>Humidity: <strong>{{ city.humidity }}%</strong></p>
+
+                              <div class="d-flex flex-row align-items-center">
+                                  <p class="mb-0 me-4">{{ city.weather.main }} -- {{ city.weather.desc }}</p>
+                                  <i :class="this.getWeatherIcon(city.weather)" style="color: #eee;"></i>
+                              </div>
+
+                          </div>
+                      </div>
+                  </div>
+                  <!--  Single city card end -->
+
+              </div>
+          </div>
+
+
+      </div>
+
+
   </div>
 
 <script src="https://unpkg.com/vue@3"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="main.js"></script>
 </body>
 </html>
